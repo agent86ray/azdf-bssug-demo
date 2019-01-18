@@ -1,0 +1,107 @@
+{
+	"name": "IfConditionDemo",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetCustomerBlobMetadata",
+				"type": "GetMetadata",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "AzureBlobCustomerStaging",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"itemName",
+						"lastModified",
+						"size",
+						"exists"
+					]
+				}
+			},
+			{
+				"name": "LookupLastRunDate",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[GET_LAST_RUN_DATE]"
+					},
+					"dataset": {
+						"referenceName": "azuresqldbEtlControl",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "CheckForNewBlob",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetCustomerBlobMetadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "LookupLastRunDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(\nactivity('GetCustomerBlobMetadata').output.lastModified,\nactivity('LookupLastRunDate').output.firstRow.LAST_RUN_DATE\n)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "SetFalse",
+							"type": "SetVariable",
+							"typeProperties": {
+								"variableName": "IsNewBlobFileAvailable",
+								"value": {
+									"value": "0",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "SetTrue",
+							"type": "SetVariable",
+							"typeProperties": {
+								"variableName": "IsNewBlobFileAvailable",
+								"value": {
+									"value": "1",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"IsNewBlobFileAvailable": {
+				"type": "String"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

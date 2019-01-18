@@ -1,0 +1,107 @@
+{
+	"name": "LoadAzureSQLDatabaseFromOnPremiseSQLServer",
+	"properties": {
+		"activities": [
+			{
+				"name": "TRUNCATE-CUSTOMER-STAGING",
+				"type": "SqlServerStoredProcedure",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[TRUNCATE_STAGE_CUSTOMER]"
+				},
+				"linkedServiceName": {
+					"referenceName": "azsqldb_bssug_demo",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "COPY-CUSTOMER-TO-STAGING",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "TRUNCATE-CUSTOMER-STAGING",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlSource"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"ID": "ID",
+							"NAME": "NAME",
+							"REGION": "REGION",
+							"ADDRESS": "ADDRESS",
+							"CITY": "CITY",
+							"STATE": "STATE",
+							"ZIP": "ZIP",
+							"MODIFIED": "MODIFIED"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CUSTOMER",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AZSQLDB_STAGE_CUSTOMER",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "MERGE-CUSTOMER-FROM-STAGING",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "COPY-CUSTOMER-TO-STAGING",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[MERGE_CUSTOMER_FROM_STAGING]"
+				},
+				"linkedServiceName": {
+					"referenceName": "azsqldb_bssug_demo",
+					"type": "LinkedServiceReference"
+				}
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

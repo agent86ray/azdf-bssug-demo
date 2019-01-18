@@ -1,0 +1,52 @@
+{
+	"name": "azuresqldbCustomer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqldb_bssug_demo",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "SURROGATE_KEY",
+				"type": "Int32"
+			},
+			{
+				"name": "SOURCE_ID",
+				"type": "Int32"
+			},
+			{
+				"name": "NAME",
+				"type": "String"
+			},
+			{
+				"name": "REGION",
+				"type": "String"
+			},
+			{
+				"name": "ADDRESS",
+				"type": "String"
+			},
+			{
+				"name": "CITY",
+				"type": "String"
+			},
+			{
+				"name": "STATE",
+				"type": "String"
+			},
+			{
+				"name": "ZIP",
+				"type": "String"
+			},
+			{
+				"name": "MODIFIED",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[CUSTOMER]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

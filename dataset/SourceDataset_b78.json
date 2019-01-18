@@ -1,0 +1,14 @@
+{
+	"name": "SourceDataset_b78",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqldb_bssug_demo",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "[dbo].[CUSTOMER]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

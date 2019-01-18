@@ -1,0 +1,6 @@
+{
+	"name": "self-hosted-integration-runtime-bssug-demo",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

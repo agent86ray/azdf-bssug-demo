@@ -1,0 +1,24 @@
+{
+	"name": "DestinationDataset_b78",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "customer.csv",
+			"folderPath": "staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

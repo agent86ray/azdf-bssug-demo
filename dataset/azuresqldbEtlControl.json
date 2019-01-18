@@ -1,0 +1,24 @@
+{
+	"name": "azuresqldbEtlControl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqldb_bssugdw",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "ID",
+				"type": "Int32"
+			},
+			{
+				"name": "LAST_RUN_DATE",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[ETL_CONTROL]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,56 @@
+{
+	"name": "DWLoadCustomerStagingFromBlob",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyCustomerBlobToStaging",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": false
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": "EXEC dbo.TRUNCATE_STAGE_CUSTOMER"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"ID": "ID",
+							"NAME": "NAME",
+							"REGION": "REGION",
+							"ADDRESS": "ADDRESS",
+							"CITY": "CITY",
+							"STATE": "STATE",
+							"ZIP": "ZIP",
+							"MODIFIED": "MODIFIED"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AzureBlobCustomerStaging",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DWStageCustomer",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

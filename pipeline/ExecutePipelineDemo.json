@@ -1,0 +1,19 @@
+{
+	"name": "ExecutePipelineDemo",
+	"properties": {
+		"activities": [
+			{
+				"name": "ExecuteLoadCustomerStaging",
+				"description": "Load Customer Staging table from a CSV file in azure blob storage",
+				"type": "ExecutePipeline",
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "DWLoadCustomerStagingFromBlob",
+						"type": "PipelineReference"
+					}
+				}
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

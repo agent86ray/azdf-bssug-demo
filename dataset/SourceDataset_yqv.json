@@ -1,0 +1,14 @@
+{
+	"name": "SourceDataset_yqv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqldb_bssug_demo",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "[SalesLT].[ProductCategory]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

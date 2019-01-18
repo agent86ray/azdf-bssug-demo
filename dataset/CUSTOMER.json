@@ -1,0 +1,48 @@
+{
+	"name": "CUSTOMER",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LINKED_SERVICE_CRM",
+			"type": "LinkedServiceReference"
+		},
+		"type": "SqlServerTable",
+		"structure": [
+			{
+				"name": "ID",
+				"type": "Int32"
+			},
+			{
+				"name": "NAME",
+				"type": "String"
+			},
+			{
+				"name": "REGION",
+				"type": "String"
+			},
+			{
+				"name": "ADDRESS",
+				"type": "String"
+			},
+			{
+				"name": "CITY",
+				"type": "String"
+			},
+			{
+				"name": "STATE",
+				"type": "String"
+			},
+			{
+				"name": "ZIP",
+				"type": "String"
+			},
+			{
+				"name": "MODIFIED",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[CUSTOMER]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

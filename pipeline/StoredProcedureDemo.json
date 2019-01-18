@@ -1,0 +1,35 @@
+{
+	"name": "StoredProcedureDemo",
+	"properties": {
+		"activities": [
+			{
+				"name": "UpdateLastRunDate",
+				"type": "SqlServerStoredProcedure",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UPDATE_LAST_RUN_DATE]",
+					"storedProcedureParameters": {
+						"LAST_RUN_DATE": {
+							"value": {
+								"value": "@pipeline().TriggerTime",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "azsqldb_bssugdw",
+					"type": "LinkedServiceReference"
+				}
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
